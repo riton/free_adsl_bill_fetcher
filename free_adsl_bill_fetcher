@@ -205,7 +205,7 @@ class FreeAdslBillFetcher(HTTPClient):
 
 class FreeAdslBillFetcherCli(object):
 
-    PROG_NAME = 'free_adsl_fetcher'
+    PROG_NAME = 'free_adsl_bil_fetcher'
 
     @staticmethod
     def _buildOptParser():
