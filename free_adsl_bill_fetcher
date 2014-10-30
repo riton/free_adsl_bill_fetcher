@@ -273,7 +273,11 @@ class FreeAdslBillFetcherCli(object):
     def run(this):
 
         wanted_bills = len(this.options.wanted_bills)
-        table_output = True if wanted_bills == 0 else False
+
+        if wanted_bills == 0 or this.options.fetch_latest:
+            table_output = False
+        else:
+            table_output = True
 
         for bill in this.fetcher.listBills():
 
