@@ -274,7 +274,7 @@ class FreeAdslBillFetcherCli(object):
 
         wanted_bills = len(this.options.wanted_bills)
 
-        if wanted_bills == 0 or this.options.fetch_latest:
+        if wanted_bills != 0 or this.options.fetch_latest:
             table_output = False
         else:
             table_output = True
