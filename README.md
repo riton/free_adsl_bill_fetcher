@@ -18,7 +18,7 @@ This software was created to retrieve FREE telecom bills in an easy way.
 ### How to install
 
 ```
-$ git clone git@gitlab.in2p3.fr:rferrand/free_adsl_bill_fetcher.git 
+$ git clone git@github.com:riton/free_adsl_bill_fetcher.git
 $ pip install -r free_adsl_bill_fetcher/requirements.txt
 ```
 
