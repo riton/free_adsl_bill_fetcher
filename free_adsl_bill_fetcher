@@ -36,10 +36,12 @@
 import re
 import os
 import sys
+from lxml import html
 import json
 import logging
 import requests
 import HTMLParser
+from itertools import izip
 from optparse import OptionParser
 from prettytable import PrettyTable
 
@@ -96,7 +98,7 @@ class FreeAdslBillFetcher(HTTPClient):
     BILL_ROOT_URL = 'https://adsl.free.fr'
     LIST_BILLS_URL = BILL_ROOT_URL + '/liste-factures.pl'
 
-    BILLFINDER_RE = re.compile(r'<strong>(?P<month>\w+?\s*\d{4})</strong>.*?<strong>(?P<price>\d+(?:\.\d+)?) Euros</strong>.*?<a href="(?P<url>facture_pdf.pl.+?)"', re.S | re.UNICODE)
+    XPATH_QUERY = '//ul[@class="pane"]/li/span/strong/text() | //ul[@class="pane"]/li/span/a/@href'
 
     class FreeSessionCredentials(object):
         def __init__(this, id, idt):
@@ -180,12 +182,16 @@ class FreeAdslBillFetcher(HTTPClient):
         with open(file, 'wb') as f:
             f.write(this.fetchBill(bill))
 
+    def _cleanupPriceString(this, price_str):
+        price = price_str[0:price_str.index(' ')]
+        return price.replace(',', '.')
 
     def _parseBillsList(this, body):
-        match = this.BILLFINDER_RE.findall(body)
-
+        tree = html.fromstring(body)
+        elements = tree.xpath(this.XPATH_QUERY)
         bills = []
-        for month, price, url in match:
+        for month, price, url in izip(*[iter(elements)]*3):
+            price = this._cleanupPriceString(price)
             bills.append(FreeAdslBillFetcher.FreeAdslBill(month, float(price), this.BILL_ROOT_URL + '/' + url))
 
         return bills

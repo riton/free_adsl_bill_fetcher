@@ -22,6 +22,8 @@ $ git clone git@github.com:riton/free_adsl_bill_fetcher.git
 $ pip install -r free_adsl_bill_fetcher/requirements.txt
 ```
 
+_Note_: `lxml` library requires `libxslt-dev` and `libxml2-dev`
+
 ### How to configure
 
 Software configuration file defaults to `~/.free_adsl_bill_fetcher.conf`.
